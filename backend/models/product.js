@@ -3,15 +3,33 @@ const mongoose = require('mongoose')
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   price: {
     type: Number,
     required:true,
+    min: 0
   },
   description: {
     type: String,
+    required: true,
   },
+  category: {
+    type: String,
+    required: true
+  },
+  stock: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
+  imageUrl: {
+    type: String,
+    required: true
+  },
+}, {
+    timestanps: true // Automatically adds creatsAt and updateAt fields
 })
 
 
