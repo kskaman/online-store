@@ -1,10 +1,10 @@
-const productRouter = require('express').Router() 
+const productRouter = require('express').Router()
 
 const Product = require('../models/product')
 
 
 // Get all products
-productRouter.get('/', async (request, response) => {
+productRouter.get('/', async (request, response, next) => {
   try {
     const products = await Product.find({})
     response.json(products)
@@ -24,7 +24,7 @@ productRouter.get('/:id', async (request, response, next) => {
   } catch (error) {
     next(error)
   }
-}) 
+})
 
 
 // Create a new product (Admin-only)
@@ -34,9 +34,9 @@ productRouter.post('/', async (request, response, next) => {
     const savedProduct = await newProduct.save()
     response.status(201).json(savedProduct)
   } catch (error) {
-     next(error) 
+    next(error)
   }
-}) 
+})
 
 
 // Update a product (Admin-only)
@@ -45,7 +45,7 @@ productRouter.put('/:id', async (request, response, next) => {
     const updatedProduct = await Product.findByIdAndUpdate(
       request.params.id,
       request.body,
-      {new : true, runValidators: true }
+      { new : true, runValidators: true }
     )
     if (!updatedProduct) {
       return response.status(404).json({ message: 'Product not found' })
@@ -56,7 +56,7 @@ productRouter.put('/:id', async (request, response, next) => {
   }
 })
 
-// Delete a product (Admin-only) 
+// Delete a product (Admin-only)
 productRouter.delete('/:id', async (request, response, next) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(request.params.id)
