@@ -1,6 +1,5 @@
 const express = require('express')
 const Cart = require('./models/cart')
-const CartItem = require('./models/cartItem')
 const cartRouter = express.Router()
 
 // Add or Update a Cart Item
@@ -15,22 +14,20 @@ cartRouter.post('/', async (request, response, next) => {
     }
 
     // Check if the product is already in the cart
-    let cartItem = await CartItem.findOne({
-      product: productId,
-      quantity,
-      user: request.user.id })
+    let cartItem = await cart.items.find(
+      item => item.product.toString() === productId
+    )
+
     if (cartItem) {
       // Update quantity
       cartItem.quantity += quantity
-      await cartItem.save()
     } else {
       // Add new item to cart
-      cartItem = new CartItem({
+      cart.items.push({
         product: productId,
         quantity,
-        user: request.user.id })
-      await cartItem.save()
-      cart.items.push(cartItem.id)
+        user: request.user.id
+      })
     }
 
     await cart.save()
@@ -59,16 +56,17 @@ cartRouter.get('/', async (request, response, next) => {
 // Delete a single Cart Item
 cartRouter.delete('./:itemId', async (request, response, next) => {
   try {
-    const cartItem = await CartItem.findByIdAndDelete(request.params.itemId)
-    if (!cartItem) {
-      return response.status(404).json({ message: 'Cart item not found' })
+    const cart = await Cart.findOne({ user: request.user.id })
+    if (!cart) {
+      return response.status(404).json({ message: 'Cart not found' })
     }
 
     // Remove the item from the cart
-    await Cart.updateOne(
-      { user: request.user.id },
-      { $pull: { items: request.params.itemId } })
+    cart.items = cart.items.filter(
+      item => item.id.toString() !== request.params.itemId
+    )
 
+    await cart.save()
     response.json({ message: 'Cart item removed' })
   } catch (error) {
     next(error)
@@ -85,7 +83,6 @@ cartRouter.delete('/', async (request, response, next) => {
     }
 
     // Remove all items from the cart
-    await CartItem.deleteMany({ user: request.user.id })
     cart.items = []
     await cart.save()
 
