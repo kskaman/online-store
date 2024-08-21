@@ -1,7 +1,6 @@
 const express = require('express')
 const Cart = require('./models/cart')
 const CartItem = require('./models/cartItem')
-const { populate } = require('../models/cart')
 const cartRouter = express.Router()
 
 // Add or Update a Cart Item
