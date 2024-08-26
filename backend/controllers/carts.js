@@ -1,9 +1,10 @@
 const express = require('express')
 const Cart = require('./models/cart')
+const {} = require('../utils/middleware/')
 const cartRouter = express.Router()
 
 // Add or Update a Cart Item
-cartRouter.post('/', async (request, response, next) => {
+cartRouter.post('/', roleMiddleware('user'), async (request, response, next) => {
   try {
     const { productId, quantity } = request.body
 
@@ -38,7 +39,7 @@ cartRouter.post('/', async (request, response, next) => {
 })
 
 // Get All Cart Items
-cartRouter.get('/', async (request, response, next) => {
+cartRouter.get('/', roleMiddleware('user'), async (request, response, next) => {
   try {
     const cart = await Cart.findOne({ user: request.user.id }).populate({
       path: 'items',

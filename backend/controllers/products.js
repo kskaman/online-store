@@ -1,5 +1,5 @@
 const productRouter = require('express').Router()
-
+const roleMiddleware = require('./../utils/middleware')
 const Product = require('../models/product')
 
 
@@ -28,7 +28,7 @@ productRouter.get('/:id', async (request, response, next) => {
 
 
 // Create a new product (Admin-only)
-productRouter.post('/', async (request, response, next) => {
+productRouter.post('/', roleMiddleware('admin'), async (request, response, next) => {
   try {
     const newProduct = new Product(request.body)
     const savedProduct = await newProduct.save()
@@ -40,7 +40,7 @@ productRouter.post('/', async (request, response, next) => {
 
 
 // Update a product (Admin-only)
-productRouter.put('/:id', async (request, response, next) => {
+productRouter.put('/:id', roleMiddleware('admin'), async (request, response, next) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       request.params.id,
@@ -57,7 +57,7 @@ productRouter.put('/:id', async (request, response, next) => {
 })
 
 // Delete a product (Admin-only)
-productRouter.delete('/:id', async (request, response, next) => {
+productRouter.delete('/:id', roleMiddleware('admin'), async (request, response, next) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(request.params.id)
     if (!deletedProduct) {
