@@ -11,7 +11,7 @@ loginRouter.post('/', async (request, response) => {
   const user = await storeUser.findOne({ email })
   const passwordCorrect = user === null
     ? false
-    : bcrypt.compare(user.passwordHash, password)
+    : bcrypt.compare(password, user.passwordHash)
 
   if (!user || !passwordCorrect) {
     return response.status(401).json({ error: 'Invalid email or password' })
@@ -25,7 +25,7 @@ loginRouter.post('/', async (request, response) => {
   }
 
   const token = jwt.sign(userForToken, process.env.SECRET, {
-    expiresIn: '1h',
+    expiresIn: 60*30,
   })
 
   response.status(200).json({

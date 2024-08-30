@@ -25,8 +25,17 @@ app.use(express.static('dist'))
 app.use(express.json())
 
 app.use('/api/products', productRouter)
-app.use('/api/cart', cartRouter)
-app.use('/api/orders', orderRouter)
+
+
+// Both Cart and Order needs the 'user' to be logged in
+
+// every route for cart requires 'user' status, so we can use roleMiddleware globally
+app.use('/api/cart', middleware.authMiddleware, middleware.roleMiddleware('user'),cartRouter)
+
+// one route requires admin while others require 'user' status, so roleMiddleware is not used globally
+app.use('/api/orders', middleware.authMiddleware, orderRouter)
+
+
 // Should be at the last
 
 // Unknown endpoints

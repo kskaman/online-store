@@ -29,16 +29,16 @@ const productSchema = new mongoose.Schema({
     required: true
   },
 }, {
-    timestanps: true // Automatically adds creatsAt and updateAt fields
+  timestamps: true // Automatically adds creatsAt and updateAt fields
 })
 
 
 productSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString()
-        delete returnedObject._id
-        delete returnedObject.__v
-    }
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
 })
 
 module.exports = mongoose.model('Product', productSchema)

@@ -2,9 +2,11 @@ const express = require('express')
 const Order = require('../models/order')
 const Cart = require('../models/cart')
 const orderRouter = express.Router()
+const middleware = require('./../utils/middleware')
+
 
 // Place a new Order
-orderRouter.post('/', async (request, response, next) => {
+orderRouter.post('/', middleware.roleMiddleware('user') ,async (request, response, next) => {
   try {
     // Fetch the user's cart
     const cart = await Cart.findOne({ user: request.user.id })
@@ -43,7 +45,7 @@ orderRouter.post('/', async (request, response, next) => {
   }
 
   // Get All Orders for the Logged-In User
-  orderRouter.get('/', async (request, response, next) => {
+  orderRouter.get('/', middleware.roleMiddleware('user') ,async (request, response, next) => {
     try {
       const orders = await Order.find({ user: request.user.id })
         .populate('orderItems.product')
@@ -55,7 +57,7 @@ orderRouter.post('/', async (request, response, next) => {
 })
 
 // Get Details of a Specific Order
-orderRouter.get('/:id', async (request, response, next) => {
+orderRouter.get('/:id', middleware.roleMiddleware('user'), async (request, response, next) => {
   try {
     const order = await Order.findById(request.params.id)
       .populate('orderItems.product')
@@ -75,7 +77,7 @@ orderRouter.get('/:id', async (request, response, next) => {
 })
 
 // Update Order Status (Admin-Only)
-orderRouter.put(':/id', async (response, request, next) => {
+orderRouter.put('/:id', middleware.roleMiddleware('admin'), async (response, request, next) => {
   try {
     const updatedOrder = await Order.findByIdAndUpdate(
       request.params.id,
@@ -94,7 +96,7 @@ orderRouter.put(':/id', async (response, request, next) => {
 })
 
 // Cancel an Order
-orderRouter.delete(':/id', async (request, response, next) => {
+orderRouter.delete('/:id', middleware.roleMiddleware('user'), async (request, response, next) => {
   try {
     const order = await Order.findById(request.params.id)
 
