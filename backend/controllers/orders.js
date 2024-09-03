@@ -77,7 +77,7 @@ orderRouter.get('/:id', middleware.roleMiddleware('user'), async (request, respo
 })
 
 // Update Order Status (Admin-Only)
-orderRouter.put('/:id', middleware.roleMiddleware('admin'), async (response, request, next) => {
+orderRouter.put('/:id', middleware.roleMiddleware('admin'), async (request, response, next) => {
   try {
     const updatedOrder = await Order.findByIdAndUpdate(
       request.params.id,
@@ -90,6 +90,27 @@ orderRouter.put('/:id', middleware.roleMiddleware('admin'), async (response, req
     }
 
     response.json(updatedOrder)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// Update Payment status (Admin only)
+orderRouter.put('/:id', async (request, response, next) => {
+  try {
+    const order = await Order.findById(request.params.id)
+    if (!order) {
+      return response.status(404).json({ message: 'Order not found' })
+    }
+
+    if (order.user.toString() !== request.user.id.toString()) {
+      return response.status(403).json({ message: 'Access denied' })
+    }
+
+    order.paymentStatus = request.body.paymentStatus || order.paymentStatus
+    await order.save()
+
+    response.json(order)
   } catch (error) {
     next(error)
   }
