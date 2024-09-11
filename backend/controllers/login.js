@@ -11,7 +11,7 @@ loginRouter.post('/', async (request, response) => {
   const user = await storeUser.findOne({ email })
   const passwordCorrect = user === null
     ? false
-    : bcrypt.compare(password, user.passwordHash)
+    : await bcrypt.compare(password, user.passwordHash)
 
   if (!user || !passwordCorrect) {
     return response.status(401).json({ error: 'Invalid email or password' })
@@ -28,10 +28,12 @@ loginRouter.post('/', async (request, response) => {
     expiresIn: 60*30,
   })
 
+  // Token expires in 2 hour
   response.status(200).json({
     token,
     username: user.username,
-    email: user.email
+    email: user.email,
+    role: user.role
   })
 })
 

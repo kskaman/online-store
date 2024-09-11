@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import ProductCard from '../components/ProductCard'
-import '../styles/HomePage.css'
+import '../styles/ProductsPage.css'
 
 import productServices from './../services/product'
 
-const HomePage = () => {
+const ProductsPage = () => {
   
   const [products, setProducts] = useState([])
 
@@ -21,22 +21,15 @@ const HomePage = () => {
   }, [])
 
   return <div>
-    <header className="hero-section">
-      <h1>Welcome to Our Online Store</h1>
-      <p>Discover our collection of amazing products.</p>
-      <button>Shop Now</button>
-    </header>
-    <section className="products-section">
-      <h2>Featured Products</h2>
+    <div className="produts-page">
+      <h1>Products</h1>
       <div className="products-grid">
-        {products.map((product) => (
-          <ProductCard 
-            key={product.id} product={product} currency="$ " 
-          />
-        ))}
+        {products.map((product) => {
+          <ProductCard key={product.id} product={product} currency="$ "/>
+        })}
       </div>
-    </section>
+    </div>
   </div>
 }
 
-export default HomePage
+export default ProductsPage

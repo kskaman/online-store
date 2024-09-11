@@ -28,6 +28,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  featured: {
+    type: Boolean,
+    default: false,
+  }
 }, {
   timestamps: true // Automatically adds creatsAt and updateAt fields
 })

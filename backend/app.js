@@ -6,6 +6,8 @@ const cors = require('cors')
 const productRouter = require('./controllers/products')
 const cartRouter = require('./controllers/carts')
 const orderRouter = require('./controllers/orders')
+const loginRouter = require('./controllers/login')
+
 
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
@@ -35,6 +37,8 @@ app.use('/api/cart', middleware.authMiddleware, middleware.roleMiddleware('user'
 // one route requires admin while others require 'user' status, so roleMiddleware is not used globally
 app.use('/api/orders', middleware.authMiddleware, orderRouter)
 
+// route for login
+app.use('/api/login', loginRouter)
 
 // Should be at the last
 
