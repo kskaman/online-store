@@ -1,7 +1,8 @@
 import { useState } from 'react'
+
 import LoginForm from '../components/LoginForm'
 import RegisterForm from '../components/RegisterForm'
-
+import '../styles/LoginRegisterPage.css'
 
 const LoginRegisterPage = () => {
   const [isRegistering, setIsRegistering] = useState(false)
@@ -18,36 +19,34 @@ const LoginRegisterPage = () => {
   }
 
   const handleLogin = () => {
-    window.location.href = '/products' // Redirect after login
+    window.location.href = '/products'
   }
 
   return (
     <div>
-      <h2>{isRegistering ? 'Register' : 'Login'}</h2>
+      <div className="login-register-container">
+        <h2>{isRegistering ? 'Register' : 'Login'}</h2>
 
-      {message && <p className={messageType}>{message}</p>}
+        {message && <p className={messageType}>{message}</p>}
 
-      {isRegistering ? (
-        <>
-          <RegisterForm showMessage={showMessage} />
-          <p>
-            Already have an account?{' '}
-            <button onClick={() => setIsRegistering(false)}>
-              Login here
-            </button>
-          </p>
-        </>
-      ) : (
-        <>
-          <LoginForm onLogin={handleLogin} showMessage={showMessage} />
-          <p>
-            Don&apos;t have an account?{' '}
-            <button onClick={() => setIsRegistering(true)}>
-              Register here
-            </button>
-          </p>
-        </>
-      )}
+        {isRegistering ? (
+          <>
+            <RegisterForm showMessage={showMessage} />
+            <div className="switch-link">
+              <p>Already have an account?</p>
+              <button onClick={() => setIsRegistering(false)}>Login here</button>
+            </div>
+          </>
+        ) : (
+          <>
+            <LoginForm onLogin={handleLogin} showMessage={showMessage} />
+            <div className="switch-link">
+              <p>Don&apos;t have an account?</p>
+              <button onClick={() => setIsRegistering(true)}>Register here</button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   )
 }

@@ -27,6 +27,7 @@ const LoginForm = ({ onLogin, showMessage }) => {
         <label>Email</label>
         <input
           type="email"
+          id="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           required
@@ -36,6 +37,7 @@ const LoginForm = ({ onLogin, showMessage }) => {
         <label>Password</label>
         <input
           type="password"
+          id="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           required

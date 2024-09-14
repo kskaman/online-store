@@ -1,7 +1,66 @@
-.success {
-  color: green;
+/* Container for the login and register forms */
+.login-register-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
-  
-.error {
-  color: red;
-}  
+
+/* Header styling */
+.login-register-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Form field labels */
+.login-register-container label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Input fields */
+.login-register-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Submit button */
+.login-register-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-register-container button:hover {
+  background-color: #45a049;
+}
+
+/* Links for switching between login and register */
+.switch-link {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.switch-link button {
+  background-color: transparent;
+  border: none;
+  color: #4CAF50;
+  cursor: pointer;
+}
+
+.switch-link button:hover {
+  text-decoration: underline;
+}

@@ -1,5 +1,5 @@
 const express = require('express')
-const Cart = require('./models/cart')
+const Cart = require('../models/cart')
 const cartRouter = express.Router()
 
 // Add or Update a Cart Item

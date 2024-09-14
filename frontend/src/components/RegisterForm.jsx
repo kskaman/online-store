@@ -27,6 +27,7 @@ const RegisterForm = ({ showMessage }) => {
         <input
           type="text"
           value={username}
+          id="username"
           onChange={(event) => setUsername(event.target.value)}
           required
         />
@@ -36,6 +37,7 @@ const RegisterForm = ({ showMessage }) => {
         <input
           type="email"
           value={email}
+          id="email"
           onChange={(event) => setEmail(event.target.value)}
           required
         />
@@ -45,6 +47,7 @@ const RegisterForm = ({ showMessage }) => {
         <input
           type="password"
           value={password}
+          id="password"
           onChange={(event) => setPassword(event.target.value)}
           required
         />
